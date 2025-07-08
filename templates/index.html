@@ -53,25 +53,6 @@
                 
                 <form id="addEmailForm" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
-                        <input type="text" id="subject" name="subject" required
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Sender</label>
-                            <input type="email" id="sender" name="sender" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Recipient</label>
-                            <input type="email" id="recipient" name="recipient" required
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </div>
-                    </div>
-                    
-                    <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
                         <input type="datetime-local" id="date" name="date" required
                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -163,9 +144,6 @@
             showLoading();
             
             const formData = new FormData();
-            formData.append('subject', document.getElementById('subject').value);
-            formData.append('sender', document.getElementById('sender').value);
-            formData.append('recipient', document.getElementById('recipient').value);
             formData.append('content', document.getElementById('content').value);
             formData.append('date', document.getElementById('date').value);
             
@@ -263,12 +241,6 @@
                     <div class="email-card bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
                         <div class="flex justify-between items-start mb-3">
                             <div>
-                                <h4 class="font-semibold text-lg text-gray-800">${email.metadata.subject}</h4>
-                                <p class="text-sm text-gray-600">
-                                    <i class="fas fa-user mr-1"></i>${email.metadata.sender} 
-                                    <i class="fas fa-arrow-right mx-2"></i> 
-                                    <i class="fas fa-user mr-1"></i>${email.metadata.recipient}
-                                </p>
                                 <p class="text-xs text-gray-500">
                                     <i class="fas fa-calendar mr-1"></i>${email.metadata.date}
                                 </p>

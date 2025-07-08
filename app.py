@@ -42,9 +42,6 @@ async def home(request: Request):
 
 @app.post("/add_email")
 async def add_email(
-    subject: str = Form(...),
-    sender: str = Form(...),
-    recipient: str = Form(...),
     content: str = Form(...),
     date: str = Form(...)
 ):
@@ -52,7 +49,7 @@ async def add_email(
     try:
         # Create email document
         email_id = str(uuid.uuid4())
-        email_text = f"Subject: {subject}\nFrom: {sender}\nTo: {recipient}\nDate: {date}\n\n{content}"
+        email_text = f"Date: {date}\n\n{content}"
         
         # Generate embedding
         embedding = get_embedding(email_text)
@@ -62,9 +59,6 @@ async def add_email(
             documents=[email_text],
             embeddings=[embedding],
             metadatas=[{
-                "subject": subject,
-                "sender": sender,
-                "recipient": recipient,
                 "date": date,
                 "id": email_id
             }],

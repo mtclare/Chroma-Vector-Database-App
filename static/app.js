@@ -42,23 +42,11 @@ const utils = {
 
 // Enhanced form validation
 function validateEmailForm() {
-    const subject = document.getElementById('subject').value.trim();
-    const sender = document.getElementById('sender').value.trim();
-    const recipient = document.getElementById('recipient').value.trim();
     const content = document.getElementById('content').value.trim();
-    
-    if (!subject || !sender || !recipient || !content) {
-        utils.showNotification('Please fill in all required fields', 'error');
+    if (!content) {
+        utils.showNotification('Please fill in the content field', 'error');
         return false;
     }
-    
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(sender) || !emailRegex.test(recipient)) {
-        utils.showNotification('Please enter valid email addresses', 'error');
-        return false;
-    }
-    
     return true;
 }
 

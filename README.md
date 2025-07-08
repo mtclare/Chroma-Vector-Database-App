@@ -50,9 +50,6 @@ A free, local email retrieval application using vector database technology for s
 ### Adding Emails
 
 1. Fill out the "Add New Email" form with:
-   - **Subject**: Email subject line
-   - **Sender**: Email address of the sender
-   - **Recipient**: Email address of the recipient
    - **Date**: Date and time of the email
    - **Content**: The email body text
 
