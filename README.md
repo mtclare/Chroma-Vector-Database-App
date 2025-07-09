@@ -2,6 +2,29 @@
 
 A free, local email retrieval application using vector database technology for semantic search capabilities.
 
+## Quick Deploy on Render
+
+### One-Click Deployment
+1. Click the "Deploy to Render" button below
+2. Connect your GitHub account
+3. Your app will be deployed automatically
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+### Manual Deployment
+1. Fork this repository
+2. Go to [render.com](https://render.com) and sign up
+3. Click "New +" → "Web Service"
+4. Connect your GitHub repository
+5. Use these settings:
+   - **Name**: `email-vector-database`
+   - **Environment**: `Python 3`
+   - **Build Command**: `pip install -r requirements-basic.txt`
+   - **Start Command**: `uvicorn app:app --host 0.0.0.0 --port $PORT`
+6. Click "Create Web Service"
+
+Your app will be available at: `https://your-app-name.onrender.com`
+
 ## Features
 
 - **Local Vector Database**: Uses ChromaDB for local storage - no cloud dependencies
@@ -10,6 +33,7 @@ A free, local email retrieval application using vector database technology for s
 - **Email Management**: Add, search, and delete emails
 - **Similarity Scoring**: See how well search results match your query
 - **Free & Open Source**: No costs, no subscriptions
+- **Database Metrics**: Real-time statistics dashboard
 
 ## Technology Stack
 
@@ -32,7 +56,7 @@ A free, local email retrieval application using vector database technology for s
 
 2. **Install dependencies**:
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements-basic.txt
    ```
 
 3. **Run the application**:
@@ -92,8 +116,9 @@ A free, local email retrieval application using vector database technology for s
 ```
 email-vector-database/
 ├── app.py                 # Main FastAPI application
-├── requirements.txt       # Python dependencies
-├── README.md             # This file
+├── requirements-basic.txt  # Python dependencies
+├── render.yaml            # Render deployment config
+├── README.md              # This file
 ├── templates/
 │   └── index.html        # Web interface template
 └── chroma_db/            # Vector database storage (created automatically)
@@ -106,6 +131,8 @@ email-vector-database/
 - `POST /search_emails` - Search emails semantically
 - `GET /get_all_emails` - Retrieve all emails
 - `DELETE /delete_email/{id}` - Delete an email
+- `GET /get_metrics` - Get database statistics
+- `GET /health` - Health check endpoint
 
 ## Customization
 
@@ -138,7 +165,7 @@ chroma_client = chromadb.PersistentClient(path="./your-path")
 
 3. **Missing dependencies**: Make sure all requirements are installed:
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements-basic.txt
    ```
 
 4. **Database errors**: Delete the `chroma_db` folder to reset the database
