@@ -2,9 +2,7 @@ services:
   - type: web
     name: email-vector-database
     env: python
-    buildCommand: |
-      pip install --upgrade pip setuptools wheel
-      pip install --no-cache-dir -r requirements-simple.txt
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install --no-cache-dir -r requirements-simple.txt
     startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
