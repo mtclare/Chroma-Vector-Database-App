@@ -128,6 +128,47 @@ async def delete_email(email_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/get_metrics")
+async def get_metrics():
+    """Get database metrics and statistics"""
+    try:
+        # Get collection info
+        collection_info = email_collection.get()
+        
+        # Calculate metrics
+        total_emails = len(collection_info['ids']) if collection_info['ids'] else 0
+        
+        # Get date range if emails exist
+        date_range = {"earliest": None, "latest": None}
+        if total_emails > 0 and collection_info['metadatas']:
+            dates = [metadata.get('date') for metadata in collection_info['metadatas'] if metadata and metadata.get('date')]
+            if dates:
+                try:
+                    parsed_dates = [datetime.fromisoformat(date.replace('T', ' ')) for date in dates if date]
+                    if parsed_dates:
+                        date_range["earliest"] = min(parsed_dates).strftime("%Y-%m-%d %H:%M")
+                        date_range["latest"] = max(parsed_dates).strftime("%Y-%m-%d %H:%M")
+                except:
+                    pass
+        
+        # Calculate average content length
+        avg_content_length = 0
+        if total_emails > 0 and collection_info['documents']:
+            content_lengths = [len(doc) for doc in collection_info['documents'] if doc]
+            avg_content_length = sum(content_lengths) // len(content_lengths) if content_lengths else 0
+        
+        metrics = {
+            "total_emails": total_emails,
+            "date_range": date_range,
+            "avg_content_length": avg_content_length,
+            "database_size": "Local ChromaDB",
+            "embedding_model": "all-MiniLM-L6-v2"
+        }
+        
+        return {"success": True, "metrics": metrics}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000) 

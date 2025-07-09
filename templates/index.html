@@ -41,6 +41,59 @@
     </header>
 
     <div class="container mx-auto px-6 py-8">
+        <!-- Metrics Section -->
+        <div class="mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Total Emails</p>
+                            <p class="text-2xl font-bold text-gray-900" id="totalEmails">-</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-green-100 text-green-600">
+                            <i class="fas fa-calendar text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Date Range</p>
+                            <p class="text-sm font-bold text-gray-900" id="dateRange">-</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                            <i class="fas fa-chart-bar text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Avg Content Length</p>
+                            <p class="text-2xl font-bold text-gray-900" id="avgContentLength">-</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-orange-100 text-orange-600">
+                            <i class="fas fa-database text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Database</p>
+                            <p class="text-sm font-bold text-gray-900" id="databaseType">ChromaDB</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Main Content -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
@@ -138,6 +191,38 @@
         // Set default date to current date/time
         document.getElementById('date').value = new Date().toISOString().slice(0, 16);
 
+        // Load metrics on page load
+        loadMetrics();
+
+        // Function to load and display metrics
+        async function loadMetrics() {
+            try {
+                const response = await fetch('/get_metrics');
+                const result = await response.json();
+                
+                if (result.success) {
+                    const metrics = result.metrics;
+                    
+                    // Update metrics display
+                    document.getElementById('totalEmails').textContent = metrics.total_emails;
+                    
+                    if (metrics.date_range.earliest && metrics.date_range.latest) {
+                        document.getElementById('dateRange').textContent = 
+                            `${metrics.date_range.earliest} to ${metrics.date_range.latest}`;
+                    } else {
+                        document.getElementById('dateRange').textContent = 'No emails yet';
+                    }
+                    
+                    document.getElementById('avgContentLength').textContent = 
+                        metrics.avg_content_length > 0 ? `${metrics.avg_content_length} chars` : 'N/A';
+                    
+                    document.getElementById('databaseType').textContent = metrics.database_size;
+                }
+            } catch (error) {
+                console.error('Error loading metrics:', error);
+            }
+        }
+
         // Add Email Form Handler
         document.getElementById('addEmailForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -159,6 +244,8 @@
                     alert('Email added successfully!');
                     document.getElementById('addEmailForm').reset();
                     document.getElementById('date').value = new Date().toISOString().slice(0, 16);
+                    // Reload metrics after adding email
+                    loadMetrics();
                 } else {
                     alert('Error adding email: ' + result.message);
                 }
@@ -280,6 +367,8 @@
                 
                 if (result.success) {
                     alert('Email deleted successfully!');
+                    // Reload metrics after deleting email
+                    loadMetrics();
                     // Refresh the current view
                     if (document.getElementById('searchQuery').value.trim()) {
                         await performSearch();
