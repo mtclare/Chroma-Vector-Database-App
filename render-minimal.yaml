@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: email-database-minimal
+    env: python
+    buildCommand: pip install -r requirements-minimal.txt
+    startCommand: uvicorn app-minimal:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.16
+      - key: PIP_NO_CACHE_DIR
+        value: "1" 
