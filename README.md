@@ -6,6 +6,7 @@ A modern web application for storing and searching emails using semantic similar
 
 - **Semantic Email Search**: Find relevant emails using natural language queries
 - **Vector Database**: Powered by ChromaDB for efficient similarity search
+- **Similarity Threshold Counting**: Count emails above a configurable similarity threshold
 - **Modern Web Interface**: Clean, responsive UI built with HTML, CSS, and JavaScript
 - **Email Management**: Add, search, and delete emails with metadata
 - **Real-time Metrics**: View database statistics and email analytics
@@ -85,6 +86,7 @@ The application provides the following REST API endpoints:
 - `GET /` - Main web interface
 - `POST /add_email` - Add a new email to the database
 - `POST /search_emails` - Search emails using semantic similarity
+- `POST /count_similar_emails` - Count emails above similarity threshold
 - `GET /get_all_emails` - Retrieve all emails from the database
 - `DELETE /delete_email/{email_id}` - Delete a specific email
 - `GET /get_metrics` - Get database statistics and metrics
@@ -105,6 +107,13 @@ The application provides the following REST API endpoints:
 - Supports natural language queries
 - Returns similarity scores for search results
 - Configurable result limits
+
+### Similarity Threshold Counting
+- **New Feature**: Count emails that exceed a configurable similarity threshold
+- Uses inverse distance function: `similarity = 1 / (1 + distance)`
+- Adjustable threshold from 0.0 to 1.0
+- Real-time counting with immediate results
+- Perfect for filtering high-relevance matches
 
 ### Email Management
 - Add emails with custom dates and content

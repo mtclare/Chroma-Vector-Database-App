@@ -1,15 +1,17 @@
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
 import chromadb
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 import json
 import os
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from datetime import datetime
 import uuid
+import numpy as np
+import math
 
 app = FastAPI(title="Email Vector Database", description="A free app to retrieve emails from a local vector database")
 
@@ -33,7 +35,24 @@ except:
 
 def get_embedding(text: str) -> List[float]:
     """Generate embedding for text"""
-    return embedding_model.encode(text).tolist()
+    emb = embedding_model.encode(text, convert_to_numpy=True)
+    return np.asarray(emb).tolist()
+
+def distance_to_similarity(distance: Optional[float]) -> Optional[float]:
+    """
+    Convert L2 distance to similarity score using inverse distance.
+    similarity = 1 / (1 + distance)
+    This gives values between 0 and 1, where 1 means identical vectors.
+    """
+    if distance is None:
+        return None
+    
+    # Avoid division by zero
+    if distance == 0:
+        return 1.0
+    
+    similarity = 1 / (1 + distance)
+    return similarity
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
@@ -85,18 +104,82 @@ async def search_emails(query: str = Form(...), limit: int = Form(10)):
         
         # Format results
         emails = []
-        if results['documents'] and results['documents'][0]:
-            for i, doc in enumerate(results['documents'][0]):
-                metadata = results['metadatas'][0][i]
-                distance = results['distances'][0][i]
-                
+        docs = results.get('documents')
+        metas = results.get('metadatas')
+        dists = results.get('distances')
+        if docs and docs[0]:
+            for i, doc in enumerate(docs[0]):
+                metadata = metas[0][i] if metas and metas[0] else None
+                distance = dists[0][i] if dists and dists[0] else None
+                similarity = distance_to_similarity(distance)
                 emails.append({
                     "content": doc,
                     "metadata": metadata,
-                    "similarity_score": 1 - distance  # Convert distance to similarity
+                    "similarity_score": similarity
                 })
         
         return {"success": True, "emails": emails, "query": query}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/count_similar_emails")
+async def count_similar_emails(query: str = Form(...), threshold: float = Form(0.7)):
+    """Count emails with similarity score above threshold for a given query"""
+    try:
+        # Generate embedding for query
+        query_embedding = get_embedding(query)
+        # Search in collection (get all possible results)
+        results = email_collection.query(
+            query_embeddings=[query_embedding],
+            n_results=1000,  # Large number to cover all
+            include=["distances"]
+        )
+        dists = results.get('distances')
+        count = 0
+        if dists and dists[0]:
+            for distance in dists[0]:
+                similarity = distance_to_similarity(distance)
+                if similarity is not None and similarity > threshold:
+                    count += 1
+        return {"success": True, "count": count, "threshold": threshold}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/get_emails_above_threshold")
+async def get_emails_above_threshold(query: str = Form(...), threshold: float = Form(0.7)):
+    """Get emails with similarity score above threshold for a given query"""
+    try:
+        # Generate embedding for query
+        query_embedding = get_embedding(query)
+        
+        # Search in collection (get all possible results)
+        results = email_collection.query(
+            query_embeddings=[query_embedding],
+            n_results=1000,  # Large number to cover all
+            include=["documents", "metadatas", "distances"]
+        )
+        
+        # Format results
+        emails = []
+        docs = results.get('documents')
+        metas = results.get('metadatas')
+        dists = results.get('distances')
+        
+        if docs and docs[0]:
+            for i, doc in enumerate(docs[0]):
+                metadata = metas[0][i] if metas and metas[0] else None
+                distance = dists[0][i] if dists and dists[0] else None
+                similarity = distance_to_similarity(distance)
+                
+                # Only include emails above threshold
+                if similarity is not None and similarity > threshold:
+                    emails.append({
+                        "content": doc,
+                        "metadata": metadata,
+                        "similarity_score": similarity
+                    })
+        
+        return {"success": True, "emails": emails, "query": query, "threshold": threshold}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -107,9 +190,11 @@ async def get_all_emails():
         results = email_collection.get()
         
         emails = []
-        if results['documents']:
-            for i, doc in enumerate(results['documents']):
-                metadata = results['metadatas'][i]
+        docs = results.get('documents')
+        metas = results.get('metadatas')
+        if docs:
+            for i, doc in enumerate(docs):
+                metadata = metas[i] if metas else None
                 emails.append({
                     "content": doc,
                     "metadata": metadata
@@ -139,15 +224,19 @@ async def get_metrics():
         total_emails = len(collection_info['ids']) if collection_info['ids'] else 0
         
         # Get date range if emails exist
-        date_range = {"earliest": None, "latest": None}
+        date_range = {}
         if total_emails > 0 and collection_info['metadatas']:
             dates = [metadata.get('date') for metadata in collection_info['metadatas'] if metadata and metadata.get('date')]
             if dates:
                 try:
-                    parsed_dates = [datetime.fromisoformat(date.replace('T', ' ')) for date in dates if date]
+                    parsed_dates = [datetime.fromisoformat(date.replace('T', ' ')) for date in dates if isinstance(date, str) and 'T' in date]
                     if parsed_dates:
-                        date_range["earliest"] = min(parsed_dates).strftime("%Y-%m-%d %H:%M")
-                        date_range["latest"] = max(parsed_dates).strftime("%Y-%m-%d %H:%M")
+                        earliest = min(parsed_dates).strftime("%Y-%m-%d %H:%M")
+                        latest = max(parsed_dates).strftime("%Y-%m-%d %H:%M")
+                        if earliest:
+                            date_range["earliest"] = earliest
+                        if latest:
+                            date_range["latest"] = latest
                 except:
                     pass
         
@@ -169,6 +258,10 @@ async def get_metrics():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return FileResponse("favicon.ico")
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint for monitoring"""
@@ -182,4 +275,4 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     
     # Use 0.0.0.0 to bind to all available network interfaces
-    uvicorn.run(app, host="0.0.0.0", port=port) 
+    uvicorn.run(app, host="127.0.0.1", port=port) 
