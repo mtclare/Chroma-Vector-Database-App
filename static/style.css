@@ -1,76 +1,78 @@
-/* Custom styles for Email Vector Database */
+/* Professional styles for Email Vector Database */
 
-/* Additional custom styles beyond Tailwind */
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+}
+
 .custom-gradient {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);
 }
 
-.email-card-hover {
-    transition: all 0.3s ease;
+.card {
+    transition: all 0.2s ease-in-out;
 }
 
-.email-card-hover:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.button {
+    transition: all 0.15s ease;
+}
+
+.button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .similarity-badge {
-    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    background: linear-gradient(45deg, #3B82F6, #60A5FA);
+    color: white;
 }
 
-/* Loading animation */
+/* Subtle loading animation */
 .loading-spinner {
     animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-/* Custom scrollbar */
+/* Modern scrollbar */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
+    background: #f3f4f6;
+    border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 4px;
+    background: #9ca3af;
+    border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
+    background: #6b7280;
 }
 
-/* Responsive improvements */
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-    
-    .grid {
-        grid-template-columns: 1fr;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
     }
 }
 
-/* Focus states for better accessibility */
-input:focus, textarea:focus, select:focus {
-    outline: 2px solid #3b82f6;
-    outline-offset: 2px;
-}
-
-/* Button hover effects */
-.btn-primary {
-    transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+/* Accessibility improvements */
+:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: #3B82F6;
+    ring-offset: 2px;
 } 

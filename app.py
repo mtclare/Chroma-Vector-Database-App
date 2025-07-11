@@ -57,7 +57,7 @@ def distance_to_similarity(distance: Optional[float]) -> Optional[float]:
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     """Home page with email management interface"""
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request": request, "year": datetime.now().year})
 
 @app.post("/add_email")
 async def add_email(
@@ -155,7 +155,7 @@ async def get_emails_above_threshold(query: str = Form(...), threshold: float = 
         # Search in collection (get all possible results)
         results = email_collection.query(
             query_embeddings=[query_embedding],
-            n_results=1000,  # Large number to cover all
+            n_results=100000,  # Large number to cover all
             include=["documents", "metadatas", "distances"]
         )
         

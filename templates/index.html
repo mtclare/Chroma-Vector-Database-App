@@ -8,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="/static/style.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -24,205 +25,200 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="flex flex-col bg-gray-100 min-h-screen font-sans antialiased" style="font-family: 'Inter', sans-serif;">
     <!-- Header -->
-    <header class="gradient-bg text-white shadow-lg">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-envelope text-2xl"></i>
-                    <h1 class="text-2xl font-bold">Email Vector Database</h1>
-                </div>
-                <div class="text-sm opacity-90">
-                    <i class="fas fa-database mr-2"></i>
-                    Local Vector Storage
+    <header class="flex-shrink-0 bg-gradient-to-r from-blue-800 to-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center justify-center">
+                <div class="text-center">
+                    <div class="flex items-center justify-center space-x-3 mb-2">
+                        <i class="fas fa-database text-3xl"></i>
+                        <h1 class="text-3xl font-bold">Email Vector Database</h1>
+                    </div>
+                    <p class="text-blue-100 text-sm font-medium">Enterprise Document Search & Analysis Platform</p>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="container mx-auto px-6 py-8">
+    <div class="container flex-grow mx-auto px-6 py-8">
         <!-- Metrics Section -->
-        <div class="mb-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
-                            <i class="fas fa-envelope text-xl"></i>
+        <div class="mb-16">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold text-gray-900">Database Overview</h2>
+                <div class="text-sm text-gray-500">Last updated: <span id="lastUpdated">-</span></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-2xl shadow-sm p-8 hover:shadow-lg transition-all duration-300 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-xl bg-blue-50 text-blue-600">
+                            <i class="fas fa-envelope text-2xl"></i>
                         </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Total Emails</p>
-                            <p class="text-2xl font-bold text-gray-900" id="totalEmails">-</p>
+                        <div class="text-right">
+                            <div class="text-xs text-green-600 font-medium">+12%</div>
+                            <div class="text-xs text-gray-400">vs last week</div>
                         </div>
                     </div>
+                    <p class="text-sm font-medium text-gray-600 mb-1">Total Documents</p>
+                    <p class="text-4xl font-bold text-gray-900" id="totalEmails">-</p>
                 </div>
                 
-                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-green-100 text-green-600">
-                            <i class="fas fa-calendar text-xl"></i>
+                <div class="bg-white rounded-2xl shadow-sm p-8 hover:shadow-lg transition-all duration-300 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-xl bg-green-50 text-green-600">
+                            <i class="fas fa-calendar text-2xl"></i>
                         </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Date Range</p>
-                            <p class="text-sm font-bold text-gray-900" id="dateRange">-</p>
+                        <div class="text-right">
+                            <div class="text-xs text-blue-600 font-medium">Active</div>
+                            <div class="text-xs text-gray-400">Database</div>
                         </div>
                     </div>
+                    <p class="text-sm font-medium text-gray-600 mb-1">Date Range</p>
+                    <p class="text-lg font-semibold text-gray-900" id="dateRange">-</p>
                 </div>
                 
-                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-purple-100 text-purple-600">
-                            <i class="fas fa-chart-bar text-xl"></i>
+                <div class="bg-white rounded-2xl shadow-sm p-8 hover:shadow-lg transition-all duration-300 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-xl bg-purple-50 text-purple-600">
+                            <i class="fas fa-chart-bar text-2xl"></i>
                         </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Avg Content Length</p>
-                            <p class="text-2xl font-bold text-gray-900" id="avgContentLength">-</p>
+                        <div class="text-right">
+                            <div class="text-xs text-purple-600 font-medium">Avg</div>
+                            <div class="text-xs text-gray-400">per document</div>
                         </div>
                     </div>
+                    <p class="text-sm font-medium text-gray-600 mb-1">Avg Length</p>
+                    <p class="text-4xl font-bold text-gray-900" id="avgContentLength">-</p>
                 </div>
                 
-                <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-orange-100 text-orange-600">
-                            <i class="fas fa-database text-xl"></i>
+                <div class="bg-white rounded-2xl shadow-sm p-8 hover:shadow-lg transition-all duration-300 border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 rounded-xl bg-orange-50 text-orange-600">
+                            <i class="fas fa-database text-2xl"></i>
                         </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-600">Database</p>
-                            <p class="text-sm font-bold text-gray-900" id="databaseType">ChromaDB</p>
+                        <div class="text-right">
+                            <div class="text-xs text-orange-600 font-medium">Vector</div>
+                            <div class="text-xs text-gray-400">Storage</div>
                         </div>
                     </div>
+                    <p class="text-sm font-medium text-gray-600 mb-1">Storage</p>
+                    <p class="text-lg font-semibold text-gray-900" id="databaseType">ChromaDB</p>
                 </div>
             </div>
         </div>
 
         <!-- Main Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 gap-8">
             
-            <!-- Add Email Section -->
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-xl font-semibold mb-4 text-gray-800">
-                    <i class="fas fa-plus-circle mr-2 text-green-500"></i>
-                    Add New Email
-                </h2>
-                
-                <form id="addEmailForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                        <input type="datetime-local" id="date" name="date" required
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Content</label>
-                        <textarea id="content" name="content" rows="4" required
-                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-                    </div>
-                    
-                    <button type="submit" 
-                            class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md transition duration-200">
-                        <i class="fas fa-save mr-2"></i>
-                        Add Email
-                    </button>
-                </form>
-            </div>
-
             <!-- Search Section -->
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-xl font-semibold mb-4 text-gray-800">
-                    <i class="fas fa-search mr-2 text-blue-500"></i>
-                    Search Emails
-                </h2>
+            <div class="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-gray-900 flex items-center">
+                        <i class="fas fa-search mr-3 text-blue-600"></i>
+                        Semantic Search
+                    </h2>
+                    <div class="text-sm text-gray-500">AI-powered document retrieval</div>
+                </div>
                 
-                <form id="searchForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Search Query</label>
-                        <input type="text" id="searchQuery" name="query" placeholder="Enter your search terms..."
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <form id="searchForm" class="space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2">
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Search Query</label>
+                            <div class="relative">
+                                <input type="text" id="searchQuery" name="query" placeholder="Enter search terms (e.g., 'project update', 'budget approval')" 
+                                       class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg">
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-lightbulb text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">Max Results</label>
+                            <select id="searchLimit" name="limit" class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <option value="5">5 results</option>
+                                <option value="10" selected>10 results</option>
+                                <option value="20">20 results</option>
+                                <option value="50">50 results</option>
+                            </select>
+                        </div>
                     </div>
                     
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Results Limit</label>
-                        <select id="searchLimit" name="limit" 
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="5">5 results</option>
-                            <option value="10" selected>10 results</option>
-                            <option value="20">20 results</option>
-                            <option value="50">50 results</option>
-                        </select>
-                    </div>
-                    
-                    <div class="flex space-x-3">
-                        <button type="submit" 
-                                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition duration-200">
-                            <i class="fas fa-search mr-2"></i>
-                            Search
+                    <div class="flex space-x-4">
+                        <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-200 flex items-center justify-center text-lg">
+                            <i class="fas fa-search mr-3"></i>
+                            Search Documents
                         </button>
-                        <button type="button" id="showAllBtn"
-                                class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-md transition duration-200">
-                            <i class="fas fa-list mr-2"></i>
-                            Show All
+                        <button type="button" id="showAllBtn" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-200 flex items-center justify-center text-lg">
+                            <i class="fas fa-database mr-3"></i>
+                            View All
                         </button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <!-- Similarity Count Section -->
-        <div class="bg-white rounded-lg shadow-md p-6 mt-8">
-            <h2 class="text-xl font-semibold mb-4 text-gray-800">
-                <i class="fas fa-hashtag mr-2 text-indigo-500"></i>
-                Count Emails by Similarity
-            </h2>
-            <form id="countForm" class="space-y-4 flex flex-col md:flex-row md:items-end md:space-x-4 md:space-y-0">
-                <div class="flex-1">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Query</label>
-                    <input type="text" id="countQuery" name="query" placeholder="Enter your query..."
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <!-- Similarity Analysis Section -->
+        <div class="bg-white rounded-2xl shadow-sm p-8 mt-8 border border-gray-100">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-900 flex items-center">
+                    <i class="fas fa-chart-line mr-3 text-purple-600"></i>
+                    Similarity Analysis
+                </h2>
+                <div class="text-sm text-gray-500">Advanced document matching</div>
+            </div>
+            <form id="countForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Analysis Query</label>
+                        <input type="text" id="countQuery" name="query" placeholder="Enter query for similarity analysis" 
+                               class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">Similarity Threshold</label>
+                        <input type="number" id="countThreshold" name="threshold" min="0" max="1" step="0.01" value="0.7" 
+                               class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div class="flex space-x-3">
+                        <button type="submit" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-200 flex items-center justify-center">
+                            <i class="fas fa-calculator mr-2"></i>
+                            Count
+                        </button>
+                        <button type="button" id="showAboveThresholdBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-200 flex items-center justify-center">
+                            <i class="fas fa-eye mr-2"></i>
+                            View
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Threshold</label>
-                    <input type="number" id="countThreshold" name="threshold" min="0" max="1" step="0.01" value="0.7"
-                           class="w-28 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                </div>
-                <button type="submit" 
-                        class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md transition duration-200">
-                    <i class="fas fa-calculator mr-2"></i>
-                    Count
-                </button>
-                <button type="button" id="showAboveThresholdBtn"
-                        class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-md transition duration-200">
-                    <i class="fas fa-eye mr-2"></i>
-                    Show Emails
-                </button>
             </form>
-            <div id="countResult" class="mt-4 text-lg font-semibold text-indigo-700 hidden"></div>
+            <div id="countResult" class="mt-6 text-lg font-semibold text-indigo-700 hidden"></div>
         </div>
 
         <!-- Results Section -->
-        <div class="mt-8">
-            <div id="resultsContainer" class="hidden">
-                <h3 class="text-lg font-semibold mb-4 text-gray-800">
-                    <i class="fas fa-envelope-open mr-2"></i>
+        <div class="mt-16">
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="text-2xl font-bold text-gray-900 flex items-center">
+                    <i class="fas fa-list-alt mr-3 text-blue-600"></i>
                     Search Results
                 </h3>
-                <div id="resultsList" class="space-y-4"></div>
+                <div class="text-sm text-gray-500" id="resultsCount"></div>
+            </div>
+            <div id="resultsContainer" class="hidden">
+                <div id="resultsList" class="space-y-6"></div>
             </div>
         </div>
 
         <!-- Loading Spinner -->
         <div id="loadingSpinner" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
-                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                <span class="text-gray-700">Processing...</span>
+            <div class="bg-white rounded-2xl p-8 flex items-center space-x-4 shadow-2xl">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+                <span class="text-gray-700 font-medium">Processing your request...</span>
             </div>
         </div>
     </div>
 
     <script src="/static/app.js"></script>
     <script>
-        // Set default date to current date/time
-        document.getElementById('date').value = new Date().toISOString().slice(0, 16);
-
         // Load metrics on page load
         loadMetrics();
 
@@ -242,51 +238,21 @@
                         document.getElementById('dateRange').textContent = 
                             `${metrics.date_range.earliest} to ${metrics.date_range.latest}`;
                     } else {
-                        document.getElementById('dateRange').textContent = 'No emails yet';
+                        document.getElementById('dateRange').textContent = 'No documents yet';
                     }
                     
                     document.getElementById('avgContentLength').textContent = 
                         metrics.avg_content_length > 0 ? `${metrics.avg_content_length} chars` : 'N/A';
                     
                     document.getElementById('databaseType').textContent = metrics.database_size;
+                    
+                    // Update last updated time
+                    document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
                 }
             } catch (error) {
                 console.error('Error loading metrics:', error);
             }
         }
-
-        // Add Email Form Handler
-        document.getElementById('addEmailForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            showLoading();
-            
-            const formData = new FormData();
-            formData.append('content', document.getElementById('content').value);
-            formData.append('date', document.getElementById('date').value);
-            
-            try {
-                const response = await fetch('/add_email', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    alert('Email added successfully!');
-                    document.getElementById('addEmailForm').reset();
-                    document.getElementById('date').value = new Date().toISOString().slice(0, 16);
-                    // Reload metrics after adding email
-                    loadMetrics();
-                } else {
-                    alert('Error adding email: ' + result.message);
-                }
-            } catch (error) {
-                alert('Error: ' + error.message);
-            } finally {
-                hideLoading();
-            }
-        });
 
         // Search Form Handler
         document.getElementById('searchForm').addEventListener('submit', async (e) => {
@@ -464,30 +430,39 @@
         function displayResults(emails, title) {
             const container = document.getElementById('resultsContainer');
             const list = document.getElementById('resultsList');
+            const countDiv = document.getElementById('resultsCount');
+            
+            // Update results count
+            countDiv.textContent = `${emails.length} document${emails.length !== 1 ? 's' : ''} found`;
             
             if (emails.length === 0) {
-                list.innerHTML = '<div class="text-center py-8 text-gray-500"><i class="fas fa-inbox text-4xl mb-4"></i><p>No emails found</p></div>';
+                list.innerHTML = `
+                    <div class="text-center py-16 text-gray-500">
+                        <i class="fas fa-search text-6xl mb-6 text-gray-300"></i>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">No documents found</h3>
+                        <p class="text-gray-500">Try adjusting your search terms or similarity threshold</p>
+                    </div>
+                `;
             } else {
                 list.innerHTML = emails.map(email => `
-                    <div class="email-card bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
-                        <div class="flex justify-between items-start mb-3">
+                    <div class="email-card bg-white rounded-2xl shadow-sm p-8 hover:shadow-lg transition-all duration-300 border border-gray-100">
+                        <div class="flex justify-between items-start mb-6 border-b border-gray-100 pb-4">
                             <div>
-                                <p class="text-xs text-gray-500">
-                                    <i class="fas fa-calendar mr-1"></i>
-                                    ${email.metadata && email.metadata.date ? email.metadata.date : 'No date'}
+                                <p class="text-sm text-gray-500 flex items-center">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    ${email.metadata && email.metadata.date ? new Date(email.metadata.date).toLocaleString() : 'No date'}
                                 </p>
                             </div>
                             ${email.similarity_score ? `
-                                <span class="similarity-badge text-white text-xs px-2 py-1 rounded-full">
-                                    ${Math.round(email.similarity_score * 100)}% match
+                                <span class="bg-blue-100 text-blue-800 text-sm font-semibold px-4 py-2 rounded-full">
+                                    Similarity: ${Math.round(email.similarity_score * 100)}%
                                 </span>
                             ` : ''}
                         </div>
-                        <div class="text-gray-700 whitespace-pre-wrap">${email.content}</div>
-                        <div class="mt-3 flex justify-end">
-                            <button onclick="deleteEmail('${email.metadata.id}')" 
-                                    class="text-red-500 hover:text-red-700 text-sm">
-                                <i class="fas fa-trash mr-1"></i>Delete
+                        <div class="text-gray-700 whitespace-pre-wrap text-base leading-relaxed">${email.content}</div>
+                        <div class="mt-6 flex justify-end">
+                            <button onclick="deleteEmail('${email.metadata.id}')" class="text-red-600 hover:text-red-800 text-sm font-semibold flex items-center px-4 py-2 rounded-lg hover:bg-red-50 transition-colors">
+                                <i class="fas fa-trash mr-2"></i> Delete Document
                             </button>
                         </div>
                     </div>
@@ -535,5 +510,9 @@
             document.getElementById('loadingSpinner').classList.add('hidden');
         }
     </script>
+    <footer class="flex-shrink-0 mt-12 py-6 text-center text-sm text-gray-500 border-t">
+        <p>&copy; {{ year }} Kaiser Permanente. All rights reserved.</p>
+        <p class="mt-1">Powered by FastAPI and ChromaDB</p>
+    </footer>
 </body>
 </html> 
