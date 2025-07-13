@@ -46,7 +46,7 @@ def add_sample_emails():
         }
     ]
     
-    print("\ud83d\udce7 Adding sample emails to the database...")
+    print("[EMAIL] Adding sample emails to the database...")
     
     for i, email in enumerate(sample_emails, 1):
         try:
@@ -58,21 +58,21 @@ def add_sample_emails():
             if response.status_code == 200:
                 result = response.json()
                 if result.get("success"):
-                    print(f"\u2705 Added email {i}")
+                    print(f"[OK] Added email {i}")
                 else:
-                    print(f"\u274c Failed to add email {i}: {result.get('message', 'Unknown error')}")
+                    print(f"[ERROR] Failed to add email {i}: {result.get('message', 'Unknown error')}")
             else:
-                print(f"\u274c HTTP error {response.status_code} for email {i}")
+                print(f"[ERROR] HTTP error {response.status_code} for email {i}")
                 
         except requests.exceptions.ConnectionError:
-            print("\u274c Error: Could not connect to the application.")
-            print("\ud83d\udca1 Make sure the application is running on http://localhost:8000")
+            print("[ERROR] Could not connect to the application.")
+            print("[INFO] Make sure the application is running on http://localhost:8000")
             return
         except Exception as e:
-            print(f"\u274c Error adding email {i}: {e}")
+            print(f"[ERROR] Error adding email {i}: {e}")
     
-    print("\n\ud83c\udf89 Sample data added successfully!")
-    print("\ud83c\udf10 Open http://localhost:8000 to view and search the emails")
+    print("\n[SUCCESS] Sample data added successfully!")
+    print("[INFO] Open http://localhost:8000 to view and search the emails")
 
 if __name__ == "__main__":
     print("=" * 50)

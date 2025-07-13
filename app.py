@@ -271,8 +271,8 @@ if __name__ == "__main__":
     import uvicorn
     import os
     
-    # Get port from environment variable (Render sets this)
+    # Get port from environment variable (Railway sets this)
     port = int(os.environ.get("PORT", 8000))
     
-    # Use 0.0.0.0 to bind to all available network interfaces
-    uvicorn.run(app, host="127.0.0.1", port=port) 
+    # Use 0.0.0.0 to bind to all available network interfaces for container deployment
+    uvicorn.run(app, host="0.0.0.0", port=port) 
