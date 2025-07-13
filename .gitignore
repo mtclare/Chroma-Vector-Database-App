@@ -10,11 +10,6 @@ ENV/
 env.bak/
 venv.bak/
 
-# Database
-chroma_db/
-*.db
-*.sqlite
-
 # IDE
 .vscode/
 .idea/
