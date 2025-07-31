@@ -30,57 +30,49 @@ Email Vector Database/
 
 ## 🛠️ Installation
 
-> **⚠️ Important**: This application requires Python 3.10.18 specifically for optimal compatibility with all dependencies.
+> **⚠️ Important**: This application requires Python 3.10+ and uses `uv` as the package manager for fast, reliable dependency management.
 
 ### Prerequisites
-- Python 3.10.18 (required)
+- Python 3.10+ (required)
 - Git
+- [uv](https://docs.astral.sh/uv/) package manager
 
 ### Installation Steps
 
-1. **Clone the repository**
+1. **Install uv (if not already installed)**
+   ```bash
+   # macOS and Linux
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   
+   # Windows
+   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+   
+   # Via pip (if you prefer)
+   pip install uv
+   ```
+
+2. **Clone the repository**
    ```bash
    git clone https://github.com/yourusername/chroma-vector-database-app.git
    cd chroma-vector-database-app
    ```
 
-2. **Verify Python version**
+3. **Install dependencies and create virtual environment**
    ```bash
-   python --version
-   # Should output: Python 3.10.18
+   uv sync
    ```
    
-   If you don't have Python 3.10.18 installed:
-   - **Windows**: Download from [python.org](https://www.python.org/downloads/release/python-31018/)
-   - **macOS**: Use `pyenv install 3.10.18` or download from python.org
-   - **Linux**: Use your package manager or pyenv: `pyenv install 3.10.18`
+   This command automatically:
+   - Creates a virtual environment with Python 3.10
+   - Installs all project dependencies
+   - Sets up the project for development
 
-3. **Create a virtual environment with Python 3.10**
+4. **Activate the virtual environment** (optional)
    ```bash
-   python3.10 -m venv .venv
-   # or if python3.10 is your default python:
-   python -m venv .venv
-   ```
-
-4. **Activate the virtual environment**
-   - **Windows**:
-     ```bash
-     .venv\Scripts\activate
-     ```
-   - **macOS/Linux**:
-     ```bash
-     source .venv/bin/activate
-     ```
-
-5. **Verify the virtual environment is using Python 3.10**
-   ```bash
-   python --version
-   # Should output: Python 3.10.18
-   ```
-
-6. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
+   # uv automatically manages the virtual environment
+   # but you can activate it manually if needed:
+   source .venv/bin/activate  # macOS/Linux
+   .venv\Scripts\activate     # Windows
    ```
 
 ## 🚀 Usage
@@ -89,7 +81,7 @@ Email Vector Database/
 
 1. **Run the FastAPI server**
    ```bash
-   python app.py
+   uv run python app.py
    ```
 
 2. **Access the web interface**
@@ -101,7 +93,7 @@ Email Vector Database/
 To populate the database with sample emails for testing:
 
 ```bash
-python sample_data.py
+uv run python sample_data.py
 ```
 
 This will add 8 sample emails covering various scenarios like project announcements, budget requests, and security updates.
@@ -184,10 +176,16 @@ For development and debugging:
 
 ```bash
 # Run with auto-reload
-uvicorn app:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn app:app --reload --host 0.0.0.0 --port 8000
 
 # Check application health
 curl http://localhost:8000/health
+
+# Add new dependencies
+uv add package-name
+
+# Update dependencies
+uv sync
 ```
 
 ## 📝 License

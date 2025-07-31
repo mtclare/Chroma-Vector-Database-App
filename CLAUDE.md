@@ -4,21 +4,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development Commands
 
+> **Note**: This project uses `uv` as the package manager. All Python commands should be prefixed with `uv run` to ensure they run in the correct virtual environment.
+
+### Setup
+```bash
+uv sync
+# Install dependencies and create virtual environment
+```
+
 ### Running the Application
 ```bash
-python app.py
+uv run python app.py
 # Starts FastAPI server on http://localhost:8000 (default) or PORT env variable
 ```
 
 ### Alternative Development Server
 ```bash
-uvicorn app:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn app:app --reload --host 0.0.0.0 --port 8000
 # Run with auto-reload for development
 ```
 
 ### Sample Data Population
 ```bash
-python sample_data.py
+uv run python sample_data.py
 # Adds 8 sample emails to the database (requires app to be running)
 ```
 
@@ -28,10 +36,16 @@ curl http://localhost:8000/health
 # Verify application status
 ```
 
-### Dependencies
+### Dependencies Management
 ```bash
-pip install -r requirements.txt
-# Install all required packages
+uv add package-name
+# Add a new dependency
+
+uv sync
+# Install/update all dependencies
+
+uv remove package-name
+# Remove a dependency
 ```
 
 ## Architecture Overview
