@@ -30,28 +30,55 @@ Email Vector Database/
 
 ## 🛠️ Installation
 
+> **⚠️ Important**: This application requires Python 3.10.18 specifically for optimal compatibility with all dependencies.
+
+### Prerequisites
+- Python 3.10.18 (required)
+- Git
+
+### Installation Steps
+
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd "Email Vector Database"
+   git clone https://github.com/yourusername/chroma-vector-database-app.git
+   cd chroma-vector-database-app
    ```
 
-2. **Create a virtual environment**
+2. **Verify Python version**
    ```bash
+   python --version
+   # Should output: Python 3.10.18
+   ```
+   
+   If you don't have Python 3.10.18 installed:
+   - **Windows**: Download from [python.org](https://www.python.org/downloads/release/python-31018/)
+   - **macOS**: Use `pyenv install 3.10.18` or download from python.org
+   - **Linux**: Use your package manager or pyenv: `pyenv install 3.10.18`
+
+3. **Create a virtual environment with Python 3.10**
+   ```bash
+   python3.10 -m venv .venv
+   # or if python3.10 is your default python:
    python -m venv .venv
    ```
 
-3. **Activate the virtual environment**
-   - Windows:
+4. **Activate the virtual environment**
+   - **Windows**:
      ```bash
      .venv\Scripts\activate
      ```
-   - macOS/Linux:
+   - **macOS/Linux**:
      ```bash
      source .venv/bin/activate
      ```
 
-4. **Install dependencies**
+5. **Verify the virtual environment is using Python 3.10**
+   ```bash
+   python --version
+   # Should output: Python 3.10.18
+   ```
+
+6. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
